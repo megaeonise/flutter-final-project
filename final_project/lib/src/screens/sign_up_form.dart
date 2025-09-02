@@ -1,8 +1,6 @@
 import 'package:final_project/src/screens/home.dart';
-import 'package:final_project/src/service/backend_service.dart';
+import 'package:final_project/src/remote/api.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -37,6 +35,7 @@ class _SignUpFormState extends State<SignUpForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(elevation: 2, title: Text("Sign up")),
       body: Center(
         child: Form(
           key: _signUpFormKey,

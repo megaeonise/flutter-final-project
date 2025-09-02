@@ -1,4 +1,5 @@
-import 'package:final_project/src/service/backend_service.dart';
+import 'package:final_project/src/models/user.dart';
+import 'package:final_project/src/remote/api.dart';
 import 'package:flutter/material.dart';
 
 class AddFriend extends StatefulWidget {
@@ -10,12 +11,42 @@ class AddFriend extends StatefulWidget {
 
 class _AddFriendState extends State<AddFriend> {
   List<dynamic> _users = [];
+  List<dynamic> _filteredUsers = [];
   final _friendSearchFieldController = TextEditingController();
+
   Future<void> _fetchList() async {
     final users = await getUsers();
     setState(() {
       _users = users;
+      _filteredUsers = users;
     });
+  }
+
+  handleSearch(query) {
+    List<dynamic> queriedUsers = [];
+    if (query == "") {
+      setState(() {
+        _filteredUsers = _users;
+      });
+    } else {
+      for (User user in _users) {
+        if (user.username.contains(query)) {
+          queriedUsers.add(user);
+        }
+        setState(() {
+          _filteredUsers = queriedUsers;
+        });
+      }
+    }
+  }
+
+  handleAddFriend(id) async {
+    final status = await postAddFriend(id);
+    if (status) {
+      print("friend added");
+    } else {
+      print("friend add error occured");
+    }
   }
 
   @override
@@ -29,7 +60,6 @@ class _AddFriendState extends State<AddFriend> {
     if (_users.isEmpty) {
       return Scaffold(
         appBar: AppBar(elevation: 2, title: Text("Add Friend")),
-
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -43,7 +73,6 @@ class _AddFriendState extends State<AddFriend> {
     if (_users[0] == "empty") {
       return Scaffold(
         appBar: AppBar(elevation: 2, title: Text("Add Friend")),
-
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -54,7 +83,6 @@ class _AddFriendState extends State<AddFriend> {
         ),
       );
     }
-    print(_users.length);
     return Scaffold(
       appBar: AppBar(elevation: 2, title: Text("Add Friend")),
       body: Column(
@@ -64,35 +92,50 @@ class _AddFriendState extends State<AddFriend> {
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: "Search for your friend",
+              suffixIcon: IconButton(
+                onPressed: handleSearch(_friendSearchFieldController.text),
+                icon: Icon(Icons.search),
+              ),
             ),
           ),
-          ListView.builder(
-            // scrollDirection: Axis.vertical,
-            // shrinkWrap: true,
-            itemCount: _users.length,
-            itemBuilder: (context, index) {
-              final user = _users[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 20),
-                    SizedBox(
-                      width: 170,
-                      height: 100,
-                      child: Column(
+
+          Flexible(
+            child: ListView.builder(
+              itemCount: _filteredUsers.length,
+              itemBuilder: (context, index) {
+                final user = _filteredUsers[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(user.username),
-                          Text("Coin: ${user.coin.toString()}"),
-                          Text("Points: ${user.points.toString()}"),
+                          SizedBox(height: 20),
+                          SizedBox(
+                            width: 170,
+                            height: 100,
+                            child: Column(
+                              children: [
+                                Text(user.username),
+                                Text("Coin: ${user.coin.toString()}"),
+                                Text("Points: ${user.points.toString()}"),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
+                      ElevatedButton(
+                        onPressed: () {
+                          handleAddFriend(user.id);
+                        },
+                        child: Text("Add Friend"),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),

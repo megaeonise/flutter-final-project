@@ -1,5 +1,5 @@
 import 'package:final_project/src/screens/home.dart';
-import 'package:final_project/src/service/backend_service.dart';
+import 'package:final_project/src/remote/api.dart';
 import 'package:flutter/material.dart';
 
 class LogInForm extends StatefulWidget {
@@ -34,6 +34,8 @@ class _LogInFormState extends State<LogInForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(elevation: 2, title: Text("Log in")),
+
       body: Center(
         child: Form(
           key: _logInFormKey,

@@ -1,6 +1,6 @@
 import 'package:final_project/src/screens/log_in_form.dart';
 import 'package:final_project/src/screens/sign_up_form.dart';
-import 'package:final_project/src/service/backend_service.dart';
+import 'package:final_project/src/remote/api.dart';
 import 'package:flutter/material.dart';
 
 void main() {

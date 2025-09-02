@@ -88,7 +88,7 @@ Future<List<dynamic>> getUsers() async {
   Response response;
   try {
     response = await dio.get('/friend/users');
-    print(response.data);
+    // print(response.data);
     final userList = response.data;
     // print(friendList[0]);
     final userMap = userList.map((element) => User.fromJson(element)).toList();
@@ -102,7 +102,7 @@ Future<List<dynamic>> getUsers() async {
 Future<bool> postAddFriend(id) async {
   print("im in the file");
   try {
-    await dio.post('/friend/add', data: {'id': id});
+    await dio.post('/friend/add', data: {'friendId': id});
     // print(
     //   await cookieJar.loadForRequest(
     //     Uri.parse('https://flutter-final-project-server.fly.dev/auth/register'),

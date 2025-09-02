@@ -2,7 +2,7 @@ import 'package:final_project/main.dart';
 import 'package:final_project/src/screens/add_friend.dart';
 import 'package:final_project/src/screens/friend_list.dart';
 import 'package:final_project/src/screens/task_list.dart';
-import 'package:final_project/src/service/backend_service.dart';
+import 'package:final_project/src/remote/api.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {

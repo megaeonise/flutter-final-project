@@ -1,4 +1,4 @@
-import 'package:final_project/src/service/backend_service.dart';
+import 'package:final_project/src/remote/api.dart';
 import 'package:flutter/material.dart';
 
 class FriendList extends StatefulWidget {
@@ -28,6 +28,7 @@ class _FriendListState extends State<FriendList> {
   Widget build(BuildContext context) {
     if (_friends.isEmpty) {
       return Scaffold(
+        appBar: AppBar(elevation: 2, title: Text("Friend List")),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -40,6 +41,7 @@ class _FriendListState extends State<FriendList> {
     }
     if (_friends[0] == "empty") {
       return Scaffold(
+        appBar: AppBar(elevation: 2, title: Text("Friend List")),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -51,24 +53,38 @@ class _FriendListState extends State<FriendList> {
       );
     }
     return Scaffold(
-      body: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: _friends.length,
-        itemBuilder: (context, index) {
-          final friend = _friends[index];
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(friend.username),
-                Text("Coin: ${friend.coin.toString()}"),
-                Text("Points: ${friend.points.toString()}"),
-              ],
+      appBar: AppBar(elevation: 2, title: Text("Friend List")),
+      body: Column(
+        children: [
+          Flexible(
+            child: ListView.builder(
+              itemCount: _friends.length,
+              itemBuilder: (context, index) {
+                final friend = _friends[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 20),
+                      SizedBox(
+                        width: 170,
+                        height: 100,
+                        child: Column(
+                          children: [
+                            Text(friend.username),
+                            Text("Coin: ${friend.coin.toString()}"),
+                            Text("Points: ${friend.points.toString()}"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
     // replace the text with bottom and put the friend thing here
