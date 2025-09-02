@@ -21,7 +21,7 @@ const getTasks = async (req: Request, res: Response) => {
 const addTask = async (req: Request, res: Response) => {
   const { title, body, urgent, color, completionTime } = req.body; //add urgent, color and start end time later
   const user = await User.findById(req.user!.id).select(
-    "-password -verificationToken -createdAt -updatedAt -inventory -verified -tasks -friends -id"
+    "-password -verificationToken -createdAt -updatedAt -inventory -verified -friends -id"
   );
   const newTask = new Task({
     title: title,

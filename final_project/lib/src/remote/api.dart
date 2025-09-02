@@ -76,6 +76,9 @@ Future<List<dynamic>> getFriends() async {
     final friendMap = friendList
         .map((element) => User.fromJson(element))
         .toList();
+    if (friendMap.isEmpty) {
+      return ["empty"];
+    }
     return friendMap;
   } catch (e) {
     print(e);
@@ -92,6 +95,9 @@ Future<List<dynamic>> getUsers() async {
     final userList = response.data;
     // print(friendList[0]);
     final userMap = userList.map((element) => User.fromJson(element)).toList();
+    if (userMap.isEmpty) {
+      return ["empty"];
+    }
     return userMap;
   } catch (e) {
     print(e);
@@ -122,8 +128,13 @@ Future<List<dynamic>> getTasks() async {
     response = await dio.get('/task/tasks');
     // print(response.data);
     final taskList = response.data;
+    print(taskList);
     // print(friendList[0]);
     final taskMap = taskList.map((element) => Task.fromJson(element)).toList();
+    print(taskMap);
+    if (taskMap.isEmpty) {
+      return ["empty"];
+    }
     return taskMap;
   } catch (e) {
     print(e);
@@ -133,6 +144,14 @@ Future<List<dynamic>> getTasks() async {
 
 Future<bool> postAddTask(title, body, urgent, color, completionTime) async {
   print("im in the file tasks");
+  final intTime = int.parse(completionTime);
+  print({
+    'title': title,
+    'body': body,
+    'urgent': urgent,
+    'color': color,
+    'completionTime': intTime,
+  });
   try {
     await dio.post(
       '/task/add',
@@ -141,14 +160,14 @@ Future<bool> postAddTask(title, body, urgent, color, completionTime) async {
         'body': body,
         'urgent': urgent,
         'color': color,
-        'completionTime': completionTime,
+        'completionTime': intTime,
       },
     );
-    // print(
-    //   await cookieJar.loadForRequest(
-    //     Uri.parse('https://flutter-final-project-server.fly.dev/auth/register'),
-    //   ),
-    // );
+    print(
+      await cookieJar.loadForRequest(
+        Uri.parse('https://flutter-final-project-server.fly.dev/auth/register'),
+      ),
+    );
     return true;
   } catch (e) {
     print(e);

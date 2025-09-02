@@ -18,13 +18,12 @@ const taskSchema = new mongoose.Schema(
     },
     color: {
       type: String,
-      default: "FFFFFF",
+      default: "0xFFFFFF",
     },
     completionTime: {
       type: Number,
       default: 1,
     },
-    user: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

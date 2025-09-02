@@ -1,16 +1,17 @@
 //use flutter timer here and post and get from user task list, you dont need task model, just make a user model
 import 'package:final_project/src/models/task.dart';
 import 'package:final_project/src/remote/api.dart';
+import 'package:final_project/src/screens/add_task.dart';
 import 'package:flutter/material.dart';
 
 class TaskList extends StatefulWidget {
   const TaskList({super.key});
 
   @override
-  State<TaskList> createState() => _AddTaskList();
+  State<TaskList> createState() => _TaskList();
 }
 
-class _AddTaskList extends State<TaskList> {
+class _TaskList extends State<TaskList> {
   List<dynamic> _tasks = [];
   List<dynamic> _filteredTasks = [];
   final _taskSearchController = TextEditingController();
@@ -71,6 +72,17 @@ class _AddTaskList extends State<TaskList> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AddTask()),
+                  );
+                },
+                child: Text("Add task"),
+              ),
+              SizedBox(height: 40),
+
               TextField(
                 controller: _taskSearchController,
                 decoration: InputDecoration(
@@ -78,6 +90,7 @@ class _AddTaskList extends State<TaskList> {
                   hintText: "Filter tasks",
                 ),
               ),
+              SizedBox(height: 40),
               Text("No tasks found."),
             ],
           ),
@@ -85,12 +98,32 @@ class _AddTaskList extends State<TaskList> {
       );
     }
     return Scaffold(
-      appBar: AppBar(elevation: 2, title: Text("Task List")),
+      appBar: AppBar(
+        elevation: 2,
+        title: Text("Task List"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _fetchList();
+            },
+            icon: Icon(Icons.refresh),
+          ),
+        ],
+      ),
       body: Center(
         child: Form(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AddTask()),
+                  );
+                },
+                child: Text("Add task"),
+              ),
               TextField(
                 controller: _taskSearchController,
                 decoration: InputDecoration(
@@ -99,6 +132,7 @@ class _AddTaskList extends State<TaskList> {
                 ),
               ),
               Flexible(
+                flex: 1,
                 child: ListView.builder(
                   itemCount: _filteredTasks.length,
                   itemBuilder: (context, index) {
@@ -109,9 +143,24 @@ class _AddTaskList extends State<TaskList> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(height: 20),
-                          SizedBox(
-                            width: 170,
-                            height: 100,
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 2, color: Colors.grey),
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(
+                                    int.parse(
+                                      task.color.substring(2),
+                                      radix: 16,
+                                    ),
+                                  ),
+                                  Colors.white,
+                                ],
+                              ),
+                            ),
                             child: Column(
                               children: [
                                 Text(task.title),
