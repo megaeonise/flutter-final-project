@@ -1,6 +1,8 @@
 import 'package:final_project/main.dart';
 import 'package:final_project/src/screens/add_friend.dart';
 import 'package:final_project/src/screens/friend_list.dart';
+import 'package:final_project/src/screens/inventory.dart';
+import 'package:final_project/src/screens/shop.dart';
 import 'package:final_project/src/screens/task_list.dart';
 import 'package:final_project/src/remote/api.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(elevation: 2, title: Text("Home Page")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -57,6 +60,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
               child: Text("Task List"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Inventory()),
+                );
+              },
+              child: Text("Inventory"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Shop()),
+                );
+              },
+              child: Text("Shop"),
             ),
             ElevatedButton(
               onPressed: () => handleLogout(),

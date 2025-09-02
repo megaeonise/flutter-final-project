@@ -43,11 +43,11 @@ const buyItem = async (req: Request, res: Response) => {
     "-password -verificationToken -createdAt -updatedAt -verified -friends -id"
   );
   const item = await Item.findById(itemId);
-  if (!user.inventory.includes(itemId)) {
+  if (!user.inventory.includes(itemId) && user.coin >= item.cost) {
     user.coin -= item.cost;
     user.inventory = [...user.inventory, itemId];
     await user.save();
-    res.status(200).send("Item bought");
+    res.status(200).json(item);
   } else {
     throw Error("You already have this item!");
   }
@@ -60,11 +60,11 @@ const gachaItem = async (req: Request, res: Response) => {
   );
   const items = await Item.find();
   const gachaReward = items[Math.floor(Math.random() * items.length)];
-  if (!user.inventory.includes(gachaReward.id)) {
+  if (!user.inventory.includes(gachaReward.id) && user.coin >= gachaCost) {
     user.coin -= gachaCost;
     user.inventory = [...user.inventory, gachaReward.id];
     await user.save();
-    res.status(200).send("Item won");
+    res.status(200).json(gachaReward);
   } else {
     throw Error("You already have this item!");
   }

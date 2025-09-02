@@ -12,6 +12,7 @@ const { JWT_SECRETKEY, JWT_SECRETKEY_2 } = require("../util/config");
 const dns = require("dns/promises");
 const nodemailer = require("nodemailer");
 // const redisClient = require("../util/redis");
+const auth = require("../middleware/auth");
 
 const emailCheck = (email: string) => {
   const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -186,11 +187,19 @@ const logout = (req: Request, res: Response) => {
   res.status(200).json({ msg: "User logged out." });
 };
 
+const me = async (req: Request, res: Response) => {
+  const user = await User.findById(req.user!.id).select(
+    "-password -verificationToken -createdAt -updatedAt -inventory -verified -tasks -friends"
+  );
+  res.status(200).json(user);
+};
+
 // authRouter.get("/user", auth, getUser);
 authRouter.post("/logout", logout);
 authRouter.post("/register", register);
 authRouter.post("/login", login);
 authRouter.get("/verify/:token", verify);
+authRouter.get("/me", auth, me);
 
 // authRouter.post("/google_login", google_login);
 // refactor to reuse error check code and stuff

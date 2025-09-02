@@ -1,6 +1,7 @@
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:final_project/src/models/item.dart';
 import 'package:final_project/src/models/task.dart';
 import 'package:final_project/src/models/user.dart';
 
@@ -62,6 +63,23 @@ Future<bool> postLogout() async {
   } catch (e) {
     print(e);
     return false;
+  }
+}
+
+Future<dynamic> getMe() async {
+  print("logging out");
+  Response response;
+  try {
+    response = await dio.get('/auth/me');
+    print(response.data);
+    final user = User.fromJson(response.data);
+    // if (friendMap.isEmpty) {
+    //   return ["empty"];
+    // }
+    return user;
+  } catch (e) {
+    print(e);
+    return ["empty"];
   }
 }
 
@@ -178,6 +196,68 @@ Future<bool> postAddTask(title, body, urgent, color, completionTime) async {
 Future<bool> putPoints(points, id) async {
   try {
     await dio.put('/task/reward', data: {'points': points, 'id': id});
+    return true;
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}
+
+Future<List<dynamic>> getShop() async {
+  print("im in the file shop");
+  Response response;
+  try {
+    response = await dio.get('/shop/get');
+    // print(response.data);
+    final itemList = response.data;
+    print(itemList);
+    // print(friendList[0]);
+    final itemMap = itemList.map((element) => Item.fromJson(element)).toList();
+    print(itemMap);
+    if (itemMap.isEmpty) {
+      return ["empty"];
+    }
+    return itemMap;
+  } catch (e) {
+    print(e);
+    return ["empty"];
+  }
+}
+
+Future<List<dynamic>> getInventory() async {
+  print("im in the file shop");
+  Response response;
+  try {
+    response = await dio.get('/shop/inventory');
+    // print(response.data);
+    final itemList = response.data;
+    print(itemList);
+    // print(friendList[0]);
+    final itemMap = itemList.map((element) => Item.fromJson(element)).toList();
+    print(itemMap);
+    if (itemMap.isEmpty) {
+      return ["empty"];
+    }
+    return itemMap;
+  } catch (e) {
+    print(e);
+    return ["empty"];
+  }
+}
+
+Future<bool> putBuyItem(itemId) async {
+  try {
+    await dio.put('/shop/buy', data: {'itemId': itemId});
+    return true;
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}
+
+Future<bool> putRollItem(gachaCost) async {
+  try {
+    await dio.put('/shop/roll', data: {'gachaCost': gachaCost});
     return true;
   } catch (e) {
     print(e);

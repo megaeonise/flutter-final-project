@@ -23,6 +23,7 @@ class TempButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(elevation: 2, title: Text("Log in or Sign up")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
