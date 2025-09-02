@@ -13,9 +13,11 @@ class _FriendListState extends State<FriendList> {
   List<dynamic> _friends = [];
   Future<void> _fetchList() async {
     final friends = await getFriends();
-    setState(() {
-      _friends = friends;
-    });
+    if (mounted) {
+      setState(() {
+        _friends = friends;
+      });
+    }
   }
 
   @override

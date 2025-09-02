@@ -174,3 +174,13 @@ Future<bool> postAddTask(title, body, urgent, color, completionTime) async {
     return false;
   }
 }
+
+Future<bool> putPoints(points, id) async {
+  try {
+    await dio.put('/task/reward', data: {'points': points, 'id': id});
+    return true;
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}

@@ -36,6 +36,23 @@ const addTask = async (req: Request, res: Response) => {
   res.status(200).send("Task added");
 };
 
+const incrementPoint = async (req: Request, res: Response) => {
+  const { points, id } = req.body;
+  const user = await User.findById(req.user!.id).select(
+    "-password -verificationToken -createdAt -updatedAt -inventory -verified -friends -id"
+  );
+  user.points += points;
+  user.coin += Math.round(points / 10);
+  await user.save();
+  deleteTask(id);
+  res.status(200).send("User received points");
+};
+
+const deleteTask = async (id: String) => {
+  await Task.findByIdAndDelete(id);
+};
+
 taskRouter.get("/tasks", auth, getTasks);
 taskRouter.post("/add", auth, addTask);
+taskRouter.put("/reward", auth, incrementPoint);
 module.exports = taskRouter;

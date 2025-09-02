@@ -16,10 +16,12 @@ class _AddFriendState extends State<AddFriend> {
 
   Future<void> _fetchList() async {
     final users = await getUsers();
-    setState(() {
-      _users = users;
-      _filteredUsers = users;
-    });
+    if (mounted) {
+      setState(() {
+        _users = users;
+        _filteredUsers = users;
+      });
+    }
   }
 
   handleSearch(query) {
