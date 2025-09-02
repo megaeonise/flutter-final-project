@@ -3,13 +3,14 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const redisClient = require("./util/redis");
 const { RedisStore } = require("connect-redis");
-const shopRefresh = require("./util/shop");
+const { shopRefresh } = require("./util/shop");
 const { PORT, MONGODB_URL, REDIS_SECRET } = require("./util/config");
 const errorHandler = require("./middleware/errorHandler");
 const session = require("express-session");
 const authRouter = require("./controllers/auth");
 const friendRouter = require("./controllers/friend");
 const taskRouter = require("./controllers/task");
+const shopRouter = require("./controllers/shop");
 
 const app = express();
 app.use(cors());
@@ -42,6 +43,7 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/friend", friendRouter);
 app.use("/task", taskRouter);
+app.use("/shop", shopRouter);
 
 console.log({
   httpOnly: process.env.NODE_ENV === "development",
